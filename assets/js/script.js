@@ -6,6 +6,18 @@ var temp = document.querySelector('.temp');
 var humi = document.querySelector('.humidity');
 var wind = document.querySelector('.wind-speed');
 var uv = document.querySelector('.uv');
+var weatherarr = []
+var mainArr = []
+
+//grab specific attributes from weather api
+//
+
+var loadWeather = function(name, value){
+    var test = localStorage.setItem(name, JSON.stringify(value))
+
+
+}
+
 
 // 'https://api.openweathermap.org/data/2.5/forecast?q=' + inputValue.value + '&appid=f46fb8ed11ba9a0d7afe9d56cc76d028'
 var currentWeather = function () {
@@ -20,11 +32,14 @@ var currentWeather = function () {
                     // console.log(data)
                     var nameValue = data['name'];
                     var tempValue = data['main']['temp'];
-                    var descValue = data['weather'][0]['main']
                     var humidValue = data['main']['humidity']
                     var windValue = data['wind']['speed']
+                    var descValue = data['weather'][0]['main']
                     // var uvValue = data['']
-
+                    weatherarr.push(tempValue,humidValue,windValue,descValue)
+                    loadWeather(nameValue, weatherarr)
+                     
+                     
                     name1.innerHTML = nameValue;
                     temp.innerHTML = "Temp: " + tempValue;
                     desc.innerHTML = "Description: " + descValue;
@@ -40,22 +55,10 @@ var currentWeather = function () {
             alert("Unable to connect to GitHub");
         });
 
-    // .then(response => response.json())
-    // .then(data => {
-    //     var nameValue = data['name'];
-    //     var tempValue = data['main']['temp'];
-    //     var descValue = data['weather'][0]['description']
-
-    //     name1.innerHTML = nameValue;
-    //     temp.innerHTML = "Temp -" + tempValue;
-    //     desc.innerHTML = "Desc -" + descValue;
-    //     inputValue.value = "";
-    // })
-
-    // .catch(err => alert("Wrong city name!"));
     cardWeather()
-}
+    
 
+}
 var cardWeather = function () {
     var fiveDayApi = 'https://api.openweathermap.org/data/2.5/forecast?q=' + inputValue.value + '&appid=f46fb8ed11ba9a0d7afe9d56cc76d028'
 
