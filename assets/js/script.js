@@ -17,7 +17,7 @@ var currentWeather = function () {
             if (response.ok) {
                 console.log(response);
                 response.json().then(function (data) {
-                    console.log(data)
+                    // console.log(data)
                     var nameValue = data['name'];
                     var tempValue = data['main']['temp'];
                     var descValue = data['weather'][0]['main']
@@ -57,7 +57,24 @@ var currentWeather = function () {
 }
 
 var cardWeather = function () {
-    console.log("yoyoyo")
+    var fiveDayApi = 'https://api.openweathermap.org/data/2.5/forecast?q=' + inputValue.value + '&appid=f46fb8ed11ba9a0d7afe9d56cc76d028'
+
+    fetch(fiveDayApi)
+        .then(function (response) {
+            // request was successful
+            if (response.ok) {
+                console.log(response);
+                response.json().then(function (data) {
+                    console.log(data)
+                });
+            } else {
+                alert("Error: " + response.statusText);
+            }
+        })
+        .catch(function (error) {
+            alert("Unable to connect to GitHub");
+        });
+
 }
 
 
