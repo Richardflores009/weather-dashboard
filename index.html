@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/style.css">
@@ -29,8 +30,8 @@
             <!-- currnet weather -->
             <div class="col-8">
                 <h2 class="name"><span id="repo-search-term"></span></h2>
-                <div id="repos-container" class="list-group">
-                    <p class="temp" data-name="0"></p>
+                <div id="repos-container" class="list-group weather-container">
+                    <p class="temp" id="weather-info" data-name="0"></p>
                     <p class="humidity" data-name="1"></p>
                     <p class="wind-speed" data-name="2"></p>
                     <p class="uv" data-name="3"></p>
@@ -46,19 +47,14 @@
             </div>
 
             <!-- 5-day weather card -->
-            <div class="col-2">
-                <div class="card-body">
-                    <p class="card-title date"></p>
-                    <p class="card-text storms"></p>
-                    <p class="card-text temp1"></p>
-                    <p class="card-text humid1"></p>
-                </div>
+            <div class="card-home">
             </div>
         </div>
-
+        
+        
 
     </div>
-
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <script src="/assets/js/script.js"></script>
 
 
