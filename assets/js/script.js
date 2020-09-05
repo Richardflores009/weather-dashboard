@@ -12,7 +12,7 @@ var windElement = document.querySelector('.wind-speed');
 var uv = document.querySelector('.uv');
 var ForecastElement = document.querySelector(".card-home")
 var cardContainerEl = document.querySelector('.card-container')
-var apiCode = '&appid=f46fb8ed11ba9a0d7afe9d56cc76d028&units=imperial' 
+var apiCode = '&appid=c888bc87519e878c5cbb608278ea9713&units=imperial' 
 var apiCode2 = '&appid=86c24a05a9ee394be1a05ee64605e1cb&units=imperial'; 
 var cities = JSON.parse(localStorage.getItem('Cities')) || [];
 var recentSearch = JSON.parse(localStorage.getItem('Current')) || [];
@@ -36,21 +36,22 @@ var loadWeather = function(name){
     }
 
     
-    if (recentSearch.includes(name)) {
-        console.log("hello")
-    } else {
-        recentSearch.shift()
-        recentSearch = []
-        console.log("nonono")
-    }
+    // if (recentSearch.includes(name)) {
+    //     console.log("hello")
+    // } else {
+    //     recentSearch.shift()
+    //     recentSearch = []
+    //     console.log("nonono")
+    // }
 
    
     localStorage.setItem("Current", JSON.stringify(weatherarr))
     localStorage.setItem("Cities", JSON.stringify(cities))
-  
+    savedWeatherElement.innerHTML = ' '
     for (i=0; i<cities.length; i++) {
         console.log(cities)
-        var savedCities = document.createElement('a')
+        var savedCities = document.createElement('button')
+        savedCities.setAttribute("class", "btn btn-primary btn-sm")
         var savedDiv = document.createElement('div')
         savedCities.textContent = cities[i]
         savedDiv.appendChild(savedCities)
@@ -58,14 +59,15 @@ var loadWeather = function(name){
     }
 
     
-    // for ( var i = 0, len = localStorage.length; i < len; ++i ) {
-    //     var weatherdesc = JSON.parse(localStorage.getItem( localStorage.key( i ) ) )
-    //     var city = (localStorage.key( i ))
-    //     // console.log([i])
-    //     console.log(weatherdesc)
-    //     // console.log(city)
+    for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+        var weatherdesc = JSON.parse(localStorage.getItem( localStorage.key( i ) ) )
+        var city = (localStorage.key( i ))
+        // console.log([i])
+        console.log(weatherdesc)
+        // console.log(city)
        
-    //   }
+      }
+
 }
 
 
@@ -205,3 +207,46 @@ var cardWeather = function () {
 
 
 button.addEventListener('click', currentWeather)
+
+
+// if(cities.includes(name)) {
+    //     [cities[0],cities[cities.indexOf(name)]] = [cities[cities.indexOf(name)],cities[0]]
+    // } else if (cities.length === 4) {
+    //     cities.unshift(name)
+    //     cities.pop()
+    // } else {
+    //     cities.push(name)
+    // }
+
+    
+    // // if (recentSearch.includes(name)) {
+    // //     console.log("hello")
+    // // } else {
+    // //     recentSearch.shift()
+    // //     recentSearch = []
+    // //     console.log("nonono")
+    // }
+
+   
+    // localStorage.setItem("Current", JSON.stringify(weatherarr))
+    // localStorage.setItem("Cities", JSON.stringify(cities))
+    // savedWeatherElement.innerHTML = ' '
+    // for (i=0; i<cities.length; i++) {
+    //     console.log(cities)
+    //     var savedCities = document.createElement('button')
+    //     savedCities.setAttribute("class", "btn btn-primary btn-sm")
+    //     var savedDiv = document.createElement('div')
+    //     savedCities.textContent = cities[i]
+    //     savedDiv.appendChild(savedCities)
+    //     savedWeatherElement.appendChild(savedDiv)
+    // }
+
+    
+    // for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+    //     var weatherdesc = JSON.parse(localStorage.getItem( localStorage.key( i ) ) )
+    //     var city = (localStorage.key( i ))
+    //     // console.log([i])
+    //     console.log(weatherdesc)
+    //     // console.log(city)
+       
+    //   }

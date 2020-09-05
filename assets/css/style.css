@@ -13,6 +13,18 @@
   padding: 0;
 }
 
+.card-element {
+text-align: center;
+margin-left: 60px ;
+}
+
+.width {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  margin: 20px;
+}
+
 body {
   background-color: var(--primary);
   margin: 0;
@@ -21,6 +33,7 @@ body {
   color: var(--dark);
   line-height: 1.5;
   font-size: 16px;
+
 }
 
 h1,

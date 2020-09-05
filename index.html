@@ -16,7 +16,7 @@
         <h2 class="display-3">Weather Dashboard</h2>
     </header>
     <!-- search box -->
-    <div class="container">
+    <div class="container width">
         <div class="row">
             <div class="col-4">
                 <div class="card">
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <!-- currnet weather -->
-            <div class="col-8">
+            <div class="col-lg -8">
                 <h2 class="name"><span id="repo-search-term"></span></h2>
                 <div id="repos-container" class="list-group weather-container">
                     <p class="temp" id="weather-info" data-name="0"></p>
@@ -45,16 +45,17 @@
         </div>
 
         <!-- search history -->
-        <div class="row">
-            <div class="saved-weather col-4">
+        <div class="row width">
+            <div class="saved-weather col-lg-4">
                 
             </div>
-
-            <!-- 5-day weather card -->
-            <div class="card-home">
+            <div class="card-home row">
             </div>
         </div>
-    </div>
+           
+        </div>
+         <!-- 5-day weather card -->
+         
 
 
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
@@ -66,11 +67,3 @@
 
 
 </html>
-<!-- <div class="card">
-                                    <h3 class="card-header text-uppercase">Search By Topic</h3>
-                                    <div id="language-buttons" class="card-body">
-                                        <button data-language="javascript" class="btn">JavaScript</button>
-                                        <button data-language="html" class="btn">HTML</button>
-                                        <button data-language="css" class="btn">CSS</button>
-                                    </div>
-                                </div> -->
