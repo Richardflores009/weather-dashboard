@@ -18,14 +18,16 @@ var cities = JSON.parse(localStorage.getItem('Cities')) || [];
 var recentSearch = JSON.parse(localStorage.getItem('Current')) || [];
 var weatherarr = []
 const weather = {};
+var pageLoaded = false
+var cardWeatherHasLoaded = false
 
 weather.temperature = {
     unit : "fahrenheit"
 }
  
-console.log(weather.temperature.value)
+// pulls both local storage current and cities ro call current function with button press or on reload
 var loadWeather = function(name){
-
+// sets length limit to local storage array and pops off the index 0 to fill with new input
     if(cities.includes(name)) {
         [cities[0],cities[cities.indexOf(name)]] = [cities[cities.indexOf(name)],cities[0]]
     } else if (cities.length === 4) {
@@ -37,16 +39,21 @@ var loadWeather = function(name){
 
     
     if (recentSearch.includes(name)) {
-        console.log("hello")
+        console.log("hell to the yeah")
     } else {
         recentSearch.shift()
         recentSearch = []
         console.log("nonono")
     }
 
-   
+   // sends sing item array for current search
     localStorage.setItem("Current", JSON.stringify(recentSearch))
+
+    // sends array of cities forsearch history
     localStorage.setItem("Cities", JSON.stringify(cities))
+
+
+    // loops through cities array to create search buttons
     savedWeatherElement.innerHTML = ' '
     for (i=0; i<cities.length; i++) {
         console.log(cities)
@@ -58,7 +65,7 @@ var loadWeather = function(name){
         savedWeatherElement.appendChild(savedDiv)
     }
 
-    
+    // this does nothing
     for ( var i = 0, len = localStorage.length; i < len; ++i ) {
         var weatherdesc = JSON.parse(localStorage.getItem( localStorage.key( i ) ) )
         var city = (localStorage.key( i ))
@@ -72,9 +79,13 @@ var loadWeather = function(name){
 
 
 
-
-var currentWeather = function () {
+// fetches current api and grabs data to push to object then calls display weather with currentweather as parameter 
+var currentWeather = function (city = null) {
+    if (pageLoaded === false) inputValue.value = city
+    pageLoaded = true
     var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + inputValue.value + apiCode
+   
+   
 
 
     // make a get request to url
@@ -92,29 +103,21 @@ var currentWeather = function () {
         weather.iconId = data.weather[0].icon;
         recentSearch = [data.name]
         // wea.push(nameValue)
-        loadWeather(data.name)
-         
-     
-        // name1.innerHTML = nameValue;
-        // temp.innerHTML = "Temp: " + tempValue;
-        // desc.innerHTML = "Description: " + descValue;
-        // humi.innerHTML = "Humidity: " + humidValue;
-        // wind.innerHTML = "Wind-Speed: " + windValue;
-        // inputValue.value = "";
-        
+        loadWeather(data.name)   
     })
     .then(function(){
         displayWeather();
-    });
-        // .catch(function (error) {
-        //     alert("Unable to connect to GitHub");
-        // });
+    })
+        .catch(function (error) {
+            currentWeather
+            alert("invalid entry");
+        });
 
-    cardWeather()
-   
-   
+    cardWeather(city) 
 }
 
+
+// when called sends api info to html elements 
 function displayWeather(){
     windElement.innerHTML = `Wind Speed: ${weather.wind} MPH`;
     humidityElement.innerHTML = `Humidity: ${weather.humidity}%`;
@@ -122,9 +125,13 @@ function displayWeather(){
     name1.innerHTML = `${weather.city}<img src="assets/images/${weather.iconId}.png"/>`;
 }
 
-var cardWeather = function () {
+
+// creates cards that store forecast data
+var cardWeather = function (city = null) {
+    if (cardWeatherHasLoaded === false) inputValue.value = city
+    cardWeatherHasLoaded = true
     var fiveDayApi = 'https://api.openweathermap.org/data/2.5/forecast?q=' + inputValue.value + apiCode
-    
+   
     
     ForecastElement.innerHTML = ' '
     fetch(fiveDayApi)
@@ -161,41 +168,13 @@ var cardWeather = function () {
                 dailyIconEl.setAttribute('class', 'card-image-top')
                 var dailyIcon = response.list[i].weather[0].icon
                 dailyIconEl.innerHTML = `<img src="assets/images/${dailyIcon}.png"/>`
-
-
-                
+ 
                 cardElement.appendChild(dayCard)
                 cardElement.appendChild(dailyIconEl)
                 cardElement.appendChild(dailyTempEl)
                 cardElement.appendChild(humidityEl)
 
                 ForecastElement.appendChild(cardElement)
-
-
-               
-                // dayCard.classList.add('bg-color')
-                // // emojiEl.classList.add('card-text')
-                // // dailyTempEl.classList.add('card-text')
-                // cardHome.classList.add('bg-color')
-               
-                
-                
-               
-               
-                
-               
-
-                
-                // cardHome.appendChild(dayCard)
-                // cardHome.appendChild(dailyIconEl)
-                // cardHome.appendChild(dailyTempEl)
-                // cardHome.appendChild(humidityEl)
-                // dayCard.appendChild(emojiEl)
-                // dayCard.appendChild(dailyTempEl)
-                // dayCard.appendChild(humidityEl)
-                // cardContainerEl.appendChild(newContainer)
-
-        
                 
             }
         })
@@ -205,48 +184,8 @@ var cardWeather = function () {
 
 
 
-
+// when submit button is clicked it calls currentweather function
 button.addEventListener('click', currentWeather)
+currentWeather(recentSearch)
 
 
-// if(cities.includes(name)) {
-    //     [cities[0],cities[cities.indexOf(name)]] = [cities[cities.indexOf(name)],cities[0]]
-    // } else if (cities.length === 4) {
-    //     cities.unshift(name)
-    //     cities.pop()
-    // } else {
-    //     cities.push(name)
-    // }
-
-    
-    // // if (recentSearch.includes(name)) {
-    // //     console.log("hello")
-    // // } else {
-    // //     recentSearch.shift()
-    // //     recentSearch = []
-    // //     console.log("nonono")
-    // }
-
-   
-    // localStorage.setItem("Current", JSON.stringify(weatherarr))
-    // localStorage.setItem("Cities", JSON.stringify(cities))
-    // savedWeatherElement.innerHTML = ' '
-    // for (i=0; i<cities.length; i++) {
-    //     console.log(cities)
-    //     var savedCities = document.createElement('button')
-    //     savedCities.setAttribute("class", "btn btn-primary btn-sm")
-    //     var savedDiv = document.createElement('div')
-    //     savedCities.textContent = cities[i]
-    //     savedDiv.appendChild(savedCities)
-    //     savedWeatherElement.appendChild(savedDiv)
-    // }
-
-    
-    // for ( var i = 0, len = localStorage.length; i < len; ++i ) {
-    //     var weatherdesc = JSON.parse(localStorage.getItem( localStorage.key( i ) ) )
-    //     var city = (localStorage.key( i ))
-    //     // console.log([i])
-    //     console.log(weatherdesc)
-    //     // console.log(city)
-       
-    //   }
