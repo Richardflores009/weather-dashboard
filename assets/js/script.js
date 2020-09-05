@@ -36,16 +36,16 @@ var loadWeather = function(name){
     }
 
     
-    // if (recentSearch.includes(name)) {
-    //     console.log("hello")
-    // } else {
-    //     recentSearch.shift()
-    //     recentSearch = []
-    //     console.log("nonono")
-    // }
+    if (recentSearch.includes(name)) {
+        console.log("hello")
+    } else {
+        recentSearch.shift()
+        recentSearch = []
+        console.log("nonono")
+    }
 
    
-    localStorage.setItem("Current", JSON.stringify(weatherarr))
+    localStorage.setItem("Current", JSON.stringify(recentSearch))
     localStorage.setItem("Cities", JSON.stringify(cities))
     savedWeatherElement.innerHTML = ' '
     for (i=0; i<cities.length; i++) {
@@ -90,7 +90,7 @@ var currentWeather = function () {
         weather.wind = data.wind.speed;
         weather.description = data.weather[0].main;
         weather.iconId = data.weather[0].icon;
-        // weatherarr = [nameValue]
+        recentSearch = [data.name]
         // wea.push(nameValue)
         loadWeather(data.name)
          
