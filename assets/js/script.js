@@ -11,22 +11,56 @@ var uv = document.querySelector('.uv');
 var cardHome = document.querySelector(".card-home")
 var cardContainerEl = document.querySelector('.card-container')
 var apiCode = '&appid=f46fb8ed11ba9a0d7afe9d56cc76d028&units=imperial' 
-
+var cities = JSON.parse(localStorage.getItem('Cities')) || [];
+var recentSearch = JSON.parse(localStorage.getItem('Current')) || [];
 var weatherarr = []
 
 
 
-var loadWeather = function(name, value){
-    var test = localStorage.setItem(name, JSON.stringify(value))
+var loadWeather = function(name){
+    console.log(cities)
+    if(cities.includes(name)) {
+        [cities[0],cities[cities.indexOf(name)]] = [cities[cities.indexOf(name)],cities[0]]
+    } else if (cities.length === 4) {
+        cities.unshift(name)
+        cities.pop()
+    } else {
+        cities.push(name)
+    }
+    console.log(cities[0])
     
-    for ( var i = 0, len = localStorage.length; i < len; ++i ) {
-        var weatherdesc = localStorage.getItem( localStorage.key( i ) ) 
-        var city = (localStorage.key( i ))
-        console.log([i])
-        console.log(weatherdesc)
-        console.log(city)
-      }
+    if (recentSearch.includes(name)) {
+        console.log("hello")
+    } else {
+        recentSearch.shift()
+        recentSearch = []
+        console.log("nonono")
+    }
+    console.log(name)
+    console.log(recentSearch)
+    // var uniq = cities.reduce(function(a,b){
+    //     if (a.indexOf(b) < 0 ) a.push(b);
+    //     return a;
+    //   },[]);
+    //   uniq.length = Math.min(uniq.length, 4);
+    //   if (uniq.length = 4) {
+    //       uniq.shift() && uniq.push(name)
+    //   }
+    //   if(uniq.includes(name))
+    //   console.log(uniq)
       
+    localStorage.setItem("Current", JSON.stringify(weatherarr))
+    localStorage.setItem("Cities", JSON.stringify(cities))
+
+    
+    // for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+    //     var weatherdesc = JSON.parse(localStorage.getItem( localStorage.key( i ) ) )
+    //     var city = (localStorage.key( i ))
+    //     // console.log([i])
+    //     console.log(weatherdesc)
+    //     // console.log(city)
+       
+    //   }
 }
 
 
@@ -48,8 +82,9 @@ var currentWeather = function () {
                     var windValue = data['wind']['speed']
                     var descValue = data['weather'][0]['main']
                     // var uvValue = data['']
-                    weatherarr = [tempValue,humidValue,windValue,descValue]
-                    loadWeather(nameValue, weatherarr)
+                    weatherarr = [nameValue]
+                    // wea.push(nameValue)
+                    loadWeather(nameValue)
                      
                  
                     name1.innerHTML = nameValue;
@@ -73,7 +108,7 @@ var currentWeather = function () {
 }
 var cardWeather = function () {
     var fiveDayApi = 'https://api.openweathermap.org/data/2.5/forecast?q=' + inputValue.value + apiCode
-
+    cardHome.innerHTML = ' '
     fetch(fiveDayApi)
         .then(function (response) {
             return response.json(); 
