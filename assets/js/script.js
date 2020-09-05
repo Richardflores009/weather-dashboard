@@ -17,8 +17,9 @@ var weatherarr = []
 
 
 
+
 var loadWeather = function(name){
-    console.log(cities)
+
     if(cities.includes(name)) {
         [cities[0],cities[cities.indexOf(name)]] = [cities[cities.indexOf(name)],cities[0]]
     } else if (cities.length === 4) {
@@ -27,7 +28,7 @@ var loadWeather = function(name){
     } else {
         cities.push(name)
     }
-    console.log(cities[0])
+
     
     if (recentSearch.includes(name)) {
         console.log("hello")
@@ -63,8 +64,9 @@ var loadWeather = function(name){
     //   }
 }
 
-
 // 'https://api.openweathermap.org/data/2.5/forecast?q=' + inputValue.value + '&appid=f46fb8ed11ba9a0d7afe9d56cc76d028'
+
+
 var currentWeather = function () {
     var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + inputValue.value + apiCode
 
@@ -72,16 +74,16 @@ var currentWeather = function () {
     // make a get request to url
     fetch(apiUrl)
         .then(function (response) {
-            // request was successful
+            console.log(response)
             if (response.ok) {
                 response.json().then(function (data) {
-                    // console.log(data)
+                    console.log(data)
                     var nameValue = data['name'];
                     var tempValue = data['main']['temp']
                     var humidValue = data['main']['humidity']
                     var windValue = data['wind']['speed']
                     var descValue = data['weather'][0]['main']
-                    // var uvValue = data['']
+                    var uvValue = data.weather[0].icon
                     weatherarr = [nameValue]
                     // wea.push(nameValue)
                     loadWeather(nameValue)
@@ -106,6 +108,7 @@ var currentWeather = function () {
     
 
 }
+
 var cardWeather = function () {
     var fiveDayApi = 'https://api.openweathermap.org/data/2.5/forecast?q=' + inputValue.value + apiCode
     cardHome.innerHTML = ' '
