@@ -120,7 +120,7 @@ var searchHistoryCall = function(){
 var uvFetch = function(lat,lon) {
     var latUv = lat
     var lonUv = lon
-    uvApi = `http://api.openweathermap.org/data/2.5/uvi?appid=86c24a05a9ee394be1a05ee64605e1cb&lat=${latUv}&lon=${lonUv}`
+    uvApi = `https://api.openweathermap.org/data/2.5/uvi?appid=86c24a05a9ee394be1a05ee64605e1cb&lat=${latUv}&lon=${lonUv}`
     fetch(uvApi)
    .then(function(response){
        let data = response.json();
