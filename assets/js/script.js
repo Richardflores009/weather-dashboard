@@ -1,6 +1,6 @@
 var currentDayCont = document.querySelector('weather-container')
 var currentDayInfo = document.getElementById('#weather-info')
-var button = document.querySelector('.btn');
+var button = document.querySelector('.submit-btn');
 var inputValue = document.querySelector('.form-input');
 var savedWeatherElement = document.querySelector('.saved-weather')
 var imageElement = document.querySelector('.image-icon')
@@ -38,13 +38,6 @@ var loadWeather = function(name){
     }
 
     
-    if (recentSearch.includes(name)) {
-        console.log("hell to the yeah")
-    } else {
-        recentSearch.shift()
-        recentSearch = []
-        console.log("nonono")
-    }
 
    // sends sing item array for current search
     localStorage.setItem("Current", JSON.stringify(recentSearch))
@@ -52,35 +45,54 @@ var loadWeather = function(name){
     // sends array of cities forsearch history
     localStorage.setItem("Cities", JSON.stringify(cities))
 
-
     // loops through cities array to create search buttons
     savedWeatherElement.innerHTML = ' '
     for (i=0; i<cities.length; i++) {
-        console.log(cities)
         var savedCities = document.createElement('button')
-        savedCities.setAttribute("class", "btn btn-primary btn-sm")
+        savedCities.setAttribute("class", "btn-light m-1 btn btn-lg btn-block")
+        // savedCities.innerHTML = `onclick="currentWeather()"`
         var savedDiv = document.createElement('div')
-        savedCities.textContent = cities[i]
+        savedCities.innerHTML =cities[i]
         savedDiv.appendChild(savedCities)
         savedWeatherElement.appendChild(savedDiv)
+        
     }
 
     // this does nothing
     for ( var i = 0, len = localStorage.length; i < len; ++i ) {
         var weatherdesc = JSON.parse(localStorage.getItem( localStorage.key( i ) ) )
         var city = (localStorage.key( i ))
-        // console.log([i])
-        console.log(weatherdesc)
-        // console.log(city)
        
       }
-
+      
 }
 
-
+var uvFetch = function(lat,lon) {
+    var latUv = lat
+    var lonUv = lon
+    uvApi = `http://api.openweathermap.org/data/2.5/uvi?appid=c888bc87519e878c5cbb608278ea9713&lat=${latUv}&lon=${lonUv}`
+    fetch(uvApi)
+   .then(function(response){
+       let data = response.json();
+       return data
+   })
+   .then(function(data){
+       weather.uv = Math.round(data.value)
+        uv.setAttribute("class", "info-text")
+       if (weather.uv <= 2) {
+            uv.setAttribute("class", "rounded-pill w-25 shadow p-3 mb-2 bg-info text-dark info-text")
+       } if ( weather.uv > 2 && weather.uv < 8) {
+            uv.setAttribute("class", "rounded-pill w-25 shadow p-3 mb-2 bg-warning text-dark info-text")
+       } else if (weather.uv >= 8){
+            uv.setAttribute("class", " rounded-pill w-25 shadow p-3 mb-2 bg-danger text-dark info-text")
+       }
+       uv.innerHTML = `UV Index: ${weather.uv}`
+   })
+}
 
 // fetches current api and grabs data to push to object then calls display weather with currentweather as parameter 
 var currentWeather = function (city = null) {
+    // singleton design pattern to run recent search onetime
     if (pageLoaded === false) inputValue.value = city
     pageLoaded = true
     var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + inputValue.value + apiCode
@@ -93,6 +105,7 @@ var currentWeather = function (city = null) {
     .then(function(response){
         let data = response.json();
         return data;
+        
     })
     .then(function(data){
         weather.city = data.name;
@@ -101,9 +114,12 @@ var currentWeather = function (city = null) {
         weather.wind = data.wind.speed;
         weather.description = data.weather[0].main;
         weather.iconId = data.weather[0].icon;
+        weather.lat = data.coord.lat
+        weather.long = data.coord.lon
         recentSearch = [data.name]
         // wea.push(nameValue)
-        loadWeather(data.name)   
+        loadWeather(data.name)
+        uvFetch(weather.lat,weather.long)   
     })
     .then(function(){
         displayWeather();
@@ -128,6 +144,7 @@ function displayWeather(){
 
 // creates cards that store forecast data
 var cardWeather = function (city = null) {
+    // singleton design pattern to run recent search onetime
     if (cardWeatherHasLoaded === false) inputValue.value = city
     cardWeatherHasLoaded = true
     var fiveDayApi = 'https://api.openweathermap.org/data/2.5/forecast?q=' + inputValue.value + apiCode
@@ -139,29 +156,28 @@ var cardWeather = function (city = null) {
             return response.json(); 
         })
         .then(function(response){
-            console.log(response)
             for (let i = 0; i < response.list.length; i += 8){
                 // console.log([i])
                 var dayCount = [i]/8+1
                 
                 var cardElement = document.createElement('div')
-                cardElement.setAttribute('class', 'card')
-
+                cardElement.setAttribute('class', 'card  shadow align-self-end card-element bg-primary')
+                cardElement.setAttribute('style', 'width: 200px;')
                 var dayCard = document.createElement('h2')
                 dayCard.setAttribute('class', 'card-text')
                 var weekDay = moment(response.list[i].dt_txt).format('dddd')
                 dayCard.innerHTML = weekDay
 
                 var dailyTempEl = document.createElement('p')
-                dailyTempEl.setAttribute('class', 'card-text')
+                dailyTempEl.setAttribute('class', 'card-text info-text')
                 var dayTemp = response.list[i].main.temp
-                dailyTempEl.innerHTML = `temp: ${dayTemp}`
+                dailyTempEl.innerHTML = `${dayTemp}°<span>F</span>`
 
 
                 var humidityEl = document.createElement('p')
-                humidityEl.setAttribute('class', 'card-text')
+                humidityEl.setAttribute('class', 'card-text info-text')
                 var humidity = response.list[i].main.humidity
-                humidityEl.innerHTML = `humidity: ${humidity}`
+                humidityEl.innerHTML = `Humidity: ${humidity}%`
 
 
                 var dailyIconEl = document.createElement('p')

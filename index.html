@@ -13,7 +13,7 @@
 
 <body>
     <header class="jumbotron">
-        <h2 class="display-3">Weather Dashboard</h2>
+        <h2 class="display-3 mx-auto page-width">Weather Dashboard</h2>
     </header>
     <!-- search box -->
     <div class="container width">
@@ -21,21 +21,22 @@
             <div class="col-4">
                 <div class="card">
                     <h3 class="card-header text-uppercase">Search By User</h3>
-                    <div id="user-form" class="card-body input">
-                        <input name="username" id="username" type="text" autofocus="true" class="form-input" />
-                        <input type="submit" value="submit" class="btn"></input>
+                    <div id="user-form " class="card-body input card-input-box">
+                        <input name="username" id="username" type="text" autofocus="true" class="form-search form-input form-control" />
+                        <input type="submit" value="submit" class="submit-btn btn btn-primary btn-lg btn-block"></input>
                     </div>
                 </div>
+                <div class="saved-weather col-lg-12"> </div> 
             </div>
             <!-- currnet weather -->
-            <div class="col-lg -8">
-                <h2 class="name"><span id="repo-search-term"></span></h2>
+            <div class="col-lg-8 border">
+                <h2 class="name state-text"><span id="repo-search-term"></span></h2>
                 <div id="repos-container" class="list-group weather-container">
-                    <p class="temp" id="weather-info" data-name="0"></p>
-                    <p class="humidity" data-name="1"></p>
-                    <p class="wind-speed" data-name="2"></p>
-                    <p class="uv" data-name="3"></p>
-                    <p class="desc" data-name="4"></p>
+                    <p class="temp info-text" id="weather-info" data-name="0"></p>
+                    <p class="humidity info-text" data-name="1"></p>
+                    <p class="wind-speed info-text" data-name="2"></p>
+                    <p class="uv info-text" data-name="3"></p>
+                    <p class="desc info-text" data-name="4"></p>
                     <div class="image-icon">
                         <img/>
                     </div>
@@ -45,11 +46,9 @@
         </div>
 
         <!-- search history -->
-        <div class="row width">
-            <div class="saved-weather col-lg-4">
-                
-            </div>
-            <div class="card-home row">
+        <div class="row">
+            
+            <div class="card-home row .col-md-4 .offset-md-4">
             </div>
         </div>
            
