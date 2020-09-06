@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Weather Dashboard</title>
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -13,19 +13,20 @@
 
 <body>
     <header class="jumbotron">
-        <h2 class="display-3 mx-auto page-width">Weather Dashboard</h2>
+        <h2 class="display-3 mx-auto page-width">Weather?</h2>
     </header>
     <!-- search box -->
     <div class="container width">
         <div class="row">
             <div class="col-4">
                 <div class="card">
-                    <h3 class="card-header text-uppercase">Search By User</h3>
+                    <h3 class="card-header text-uppercase">Search By City</h3>
                     <div id="user-form " class="card-body input card-input-box">
                         <input name="username" id="username" type="text" autofocus="true" class="form-search form-input form-control" />
                         <input type="submit" value="submit" class="submit-btn btn btn-primary btn-lg btn-block"></input>
                     </div>
                 </div>
+                <!-- search history -->
                 <div class="saved-weather col-lg-12"> </div> 
             </div>
             <!-- currnet weather -->
@@ -44,16 +45,15 @@
                 </div>
             </div>
         </div>
-
-        <!-- search history -->
+        
+         <!-- 5-day weather card -->
         <div class="row">
-            
-            <div class="card-home row .col-md-4 .offset-md-4">
+            <div class="card-home center-card row .col-md-4 .offset-md-4">
             </div>
         </div>
            
-        </div>
-         <!-- 5-day weather card -->
+      
+        
          
 
 

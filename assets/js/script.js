@@ -17,6 +17,10 @@ var apiCode2 = '&appid=86c24a05a9ee394be1a05ee64605e1cb&units=imperial';
 var cities = JSON.parse(localStorage.getItem('Cities')) || [];
 var recentSearch = JSON.parse(localStorage.getItem('Current')) || [];
 var weatherarr = []
+var firstArr = []
+var secondArr = []
+var thirdArr = []
+var fourthArr = []
 const weather = {};
 var pageLoaded = false
 var cardWeatherHasLoaded = false
@@ -24,7 +28,6 @@ var cardWeatherHasLoaded = false
 weather.temperature = {
     unit : "fahrenheit"
 }
- 
 // pulls both local storage current and cities ro call current function with button press or on reload
 var loadWeather = function(name){
 // sets length limit to local storage array and pops off the index 0 to fill with new input
@@ -45,32 +48,79 @@ var loadWeather = function(name){
     // sends array of cities forsearch history
     localStorage.setItem("Cities", JSON.stringify(cities))
 
+    var counter = 0
     // loops through cities array to create search buttons
     savedWeatherElement.innerHTML = ' '
     for (i=0; i<cities.length; i++) {
         var savedCities = document.createElement('button')
         savedCities.setAttribute("class", "btn-light m-1 btn btn-lg btn-block")
+        savedCities.setAttribute("id", counter++)
         // savedCities.innerHTML = `onclick="currentWeather()"`
         var savedDiv = document.createElement('div')
         savedCities.innerHTML =cities[i]
         savedDiv.appendChild(savedCities)
         savedWeatherElement.appendChild(savedDiv)
-        
+        // searchHistoryCall(savedCities)
+        var firstButton = document.getElementById("0")
+        var x = document.getElementById("0").textContent;
+        firstButton.addEventListener("click",function(){
+            document.getElementById(inputValue).setAttribute('value', x)
+            location.reload(true);
+        })
+        // var x = document.getElementsByTagName("button")[0];
+        // if (x.id === "0") {}
+        console.log(x)
+     
+        // console.log([0].id)
+        // var secondButton = document.getElementById("1")
+        // secondArr.push(secondButton)
+        // console.log(secondArr)
+        // var thirdButton = document.getElementById("2")
+        // thirdArr.push(thirdButton)
+        // console.log(thirdArr)
+        // var fourthButton = document.getElementById("3")
+        // fourthArr.push(fourthButton)
+        // console.log(fourthArr)
+        // Object.values(firstButton)
+        // firstButton.addEventListener("click", function(){
+        //     localStorage.setItem("Current", JSON.stringify(firstButton))
+        //     window.location.reload(true);
+        // })
+        // console.log(firstButton)
     }
 
-    // this does nothing
-    for ( var i = 0, len = localStorage.length; i < len; ++i ) {
-        var weatherdesc = JSON.parse(localStorage.getItem( localStorage.key( i ) ) )
-        var city = (localStorage.key( i ))
-       
-      }
-      
+  
 }
 
+
+var searchHistoryCall = function(){
+    // var firstButton = document.getElementById("0")
+    // var secondButton = document.getElementById("1")
+    // var thirdButton = document.getElementById("2")
+    // var fourthButton = document.getElementById("3")
+    // Object.values(firstButton)
+    // console.log(firstButton)
+
+    // firstButton.addEventListener("click", function(){
+    //     localStorage.setItem("Current", JSON.stringify(Object.values(firstButton)))
+    //     window.location.reload(true);
+    // })
+
+    // console.log(searchHistoryObj.first)
+
+    // searchHistoryObj.first = firstButton
+    // searchHistoryObj.second = secondButton
+    // searchHistoryObj.third = thirdButton
+    // searchHistoryObj.fourth = fourthButton
+
+}
+
+
+//grab, convert, and send uv to page
 var uvFetch = function(lat,lon) {
     var latUv = lat
     var lonUv = lon
-    uvApi = `http://api.openweathermap.org/data/2.5/uvi?appid=c888bc87519e878c5cbb608278ea9713&lat=${latUv}&lon=${lonUv}`
+    uvApi = `http://api.openweathermap.org/data/2.5/uvi?appid=86c24a05a9ee394be1a05ee64605e1cb&lat=${latUv}&lon=${lonUv}`
     fetch(uvApi)
    .then(function(response){
        let data = response.json();
@@ -95,7 +145,7 @@ var currentWeather = function (city = null) {
     // singleton design pattern to run recent search onetime
     if (pageLoaded === false) inputValue.value = city
     pageLoaded = true
-    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + inputValue.value + apiCode
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + inputValue.value + apiCode2
    
    
 
@@ -147,7 +197,7 @@ var cardWeather = function (city = null) {
     // singleton design pattern to run recent search onetime
     if (cardWeatherHasLoaded === false) inputValue.value = city
     cardWeatherHasLoaded = true
-    var fiveDayApi = 'https://api.openweathermap.org/data/2.5/forecast?q=' + inputValue.value + apiCode
+    var fiveDayApi = 'https://api.openweathermap.org/data/2.5/forecast?q=' + inputValue.value + apiCode2
    
     
     ForecastElement.innerHTML = ' '
