@@ -1,8 +1,6 @@
 var currentDayCont = document.querySelector('weather-container')
 var currentDayInfo = document.getElementById('#weather-info')
 var button = document.querySelector('.submit-btn');
-var inputValue = document.querySelector('.form-input');
-var savedWeatherElement = document.querySelector('.saved-weather')
 var imageElement = document.querySelector('.image-icon')
 var name1 = document.querySelector('.name');
 var desc = document.querySelector('.desc');
@@ -17,14 +15,10 @@ var apiCode2 = '&appid=86c24a05a9ee394be1a05ee64605e1cb&units=imperial';
 var cities = JSON.parse(localStorage.getItem('Cities')) || [];
 var recentSearch = JSON.parse(localStorage.getItem('Current')) || [];
 var weatherarr = []
-var firstArr = []
-var secondArr = []
-var thirdArr = []
-var fourthArr = []
+var recentSearchArray = []
 const weather = {};
 var pageLoaded = false
 var cardWeatherHasLoaded = false
-
 weather.temperature = {
     unit : "fahrenheit"
 }
@@ -43,76 +37,31 @@ var loadWeather = function(name){
     
 
    // sends sing item array for current search
-    localStorage.setItem("Current", JSON.stringify(recentSearch))
+    localStorage.setItem("Current", JSON.stringify(name))
 
     // sends array of cities forsearch history
     localStorage.setItem("Cities", JSON.stringify(cities))
 
-    var counter = 0
+   
     // loops through cities array to create search buttons
-    savedWeatherElement.innerHTML = ' '
+    // savedWeatherElement.innerHTML = ' '
+    $('.saved-weather').empty();
     for (i=0; i<cities.length; i++) {
-        var savedCities = document.createElement('button')
-        savedCities.setAttribute("class", "btn-light m-1 btn btn-lg btn-block")
-        savedCities.setAttribute("id", counter++)
-        // savedCities.innerHTML = `onclick="currentWeather()"`
-        var savedDiv = document.createElement('div')
-        savedCities.innerHTML =cities[i]
-        savedDiv.appendChild(savedCities)
-        savedWeatherElement.appendChild(savedDiv)
-        // searchHistoryCall(savedCities)
-        var firstButton = document.getElementById("0")
-        var x = document.getElementById("0").textContent;
-        firstButton.addEventListener("click",function(){
-            document.getElementById(inputValue).setAttribute('value', x)
-            location.reload(true);
+        var savedCities = $(`<button class = "${cities[i]} btn-light m-1 btn btn-lg btn-block" >`);
+        savedCities.text(cities[i])
+
+        $('.saved-weather').append(savedCities)
+        
+        savedCities.click(function(){
+            console.log(this)
+            var textContent = this.textContent;
+            currentWeather(textContent);
+            cardWeather(textContent);
         })
-        // var x = document.getElementsByTagName("button")[0];
-        // if (x.id === "0") {}
-        console.log(x)
-     
-        // console.log([0].id)
-        // var secondButton = document.getElementById("1")
-        // secondArr.push(secondButton)
-        // console.log(secondArr)
-        // var thirdButton = document.getElementById("2")
-        // thirdArr.push(thirdButton)
-        // console.log(thirdArr)
-        // var fourthButton = document.getElementById("3")
-        // fourthArr.push(fourthButton)
-        // console.log(fourthArr)
-        // Object.values(firstButton)
-        // firstButton.addEventListener("click", function(){
-        //     localStorage.setItem("Current", JSON.stringify(firstButton))
-        //     window.location.reload(true);
-        // })
-        // console.log(firstButton)
+   
+    
     }
-
   
-}
-
-
-var searchHistoryCall = function(){
-    // var firstButton = document.getElementById("0")
-    // var secondButton = document.getElementById("1")
-    // var thirdButton = document.getElementById("2")
-    // var fourthButton = document.getElementById("3")
-    // Object.values(firstButton)
-    // console.log(firstButton)
-
-    // firstButton.addEventListener("click", function(){
-    //     localStorage.setItem("Current", JSON.stringify(Object.values(firstButton)))
-    //     window.location.reload(true);
-    // })
-
-    // console.log(searchHistoryObj.first)
-
-    // searchHistoryObj.first = firstButton
-    // searchHistoryObj.second = secondButton
-    // searchHistoryObj.third = thirdButton
-    // searchHistoryObj.fourth = fourthButton
-
 }
 
 
@@ -141,11 +90,8 @@ var uvFetch = function(lat,lon) {
 }
 
 // fetches current api and grabs data to push to object then calls display weather with currentweather as parameter 
-var currentWeather = function (city = null) {
-    // singleton design pattern to run recent search onetime
-    if (pageLoaded === false) inputValue.value = city
-    pageLoaded = true
-    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + inputValue.value + apiCode2
+var currentWeather = function (city) {
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + apiCode2
    
    
 
@@ -166,20 +112,19 @@ var currentWeather = function (city = null) {
         weather.iconId = data.weather[0].icon;
         weather.lat = data.coord.lat
         weather.long = data.coord.lon
-        recentSearch = [data.name]
-        // wea.push(nameValue)
-        loadWeather(data.name)
+        // recentSearch = [data.name]
+        
         uvFetch(weather.lat,weather.long)   
     })
     .then(function(){
         displayWeather();
     })
-        .catch(function (error) {
-            currentWeather
-            alert("invalid entry");
-        });
+        // .catch(function (error) {
+        //     currentWeather
+        //     alert("invalid entry");
+        // });
 
-    cardWeather(city) 
+  
 }
 
 
@@ -193,11 +138,9 @@ function displayWeather(){
 
 
 // creates cards that store forecast data
-var cardWeather = function (city = null) {
+var cardWeather = function (city) {
     // singleton design pattern to run recent search onetime
-    if (cardWeatherHasLoaded === false) inputValue.value = city
-    cardWeatherHasLoaded = true
-    var fiveDayApi = 'https://api.openweathermap.org/data/2.5/forecast?q=' + inputValue.value + apiCode2
+    var fiveDayApi = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + apiCode2
    
     
     ForecastElement.innerHTML = ' '
@@ -249,9 +192,33 @@ var cardWeather = function (city = null) {
 }
 
 
+var searchHandler = function() {
+    // event.preventDefault()
+    var searchItem = document.querySelector('#username').value.trim()
+    if(searchItem) {
+        cardWeather(searchItem)
+        currentWeather(searchItem)
+        loadWeather(searchItem)
+        document.querySelector('#username').value = ""
+    } 
+    // else {
+    //     alert("Please enter a City")
+    // }
+    
+}
+
+
 
 // when submit button is clicked it calls currentweather function
-button.addEventListener('click', currentWeather)
-currentWeather(recentSearch)
-
+button.addEventListener('click', searchHandler)
+window.addEventListener('load', 
+  function() { 
+    console.log(recentSearch)
+    if(recentSearch) {
+        cardWeather(recentSearch)
+        currentWeather(recentSearch)
+        loadWeather(recentSearch)
+        document.querySelector('#username').value = ""
+    } 
+  }, false);
 
