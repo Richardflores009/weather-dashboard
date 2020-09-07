@@ -17,6 +17,9 @@ var recentSearch = JSON.parse(localStorage.getItem('Current'));
 var weatherarr = []
 var recentSearchArray = []
 const weather = {};
+var currentDay = moment().format('dddd, MMMM Do YYYY')
+var currentHour = moment().hours()
+$("#currentDay").replaceWith(currentDay)
 var pageLoaded = false
 var cardWeatherHasLoaded = false
 weather.temperature = {
