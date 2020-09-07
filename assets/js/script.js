@@ -13,7 +13,7 @@ var cardContainerEl = document.querySelector('.card-container')
 var apiCode = '&appid=c888bc87519e878c5cbb608278ea9713&units=imperial' 
 var apiCode2 = '&appid=86c24a05a9ee394be1a05ee64605e1cb&units=imperial'; 
 var cities = JSON.parse(localStorage.getItem('Cities')) || [];
-var recentSearch = JSON.parse(localStorage.getItem('Current')) || [];
+var recentSearch = JSON.parse(localStorage.getItem('Current'));
 var weatherarr = []
 var recentSearchArray = []
 const weather = {};
